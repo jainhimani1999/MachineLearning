@@ -1,0 +1,8 @@
+import numpy as np
+a=input('enter the desired number of rows')
+b-input('enter the desired number of columns')
+array1=np.random.rand(a,b)
+print(array1)
+
+array1.resahpe(b,a)
+np.savetxt('a.txt',array1,fmt='%.2f')
