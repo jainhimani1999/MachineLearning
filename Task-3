@@ -1,0 +1,7 @@
+import matplotlib.pyplot as plt
+import pandas as pd
+df=pd.read_csv("student.csv")
+plt.pie(df.iloc[0:,1],labels=df.iloc[0:,1],autopct="%1.1f%%") #pie-chart for marks
+plt.pie(df.iloc[0:,2],labels=df.iloc[0:,2],autopct="%1.1f%%") #pie-chart for age
+plt.legend()
+plt.show()
