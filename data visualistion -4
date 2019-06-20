@@ -1,0 +1,69 @@
+import requests
+from bs4 import BeautifulSoup
+import operator
+from collections import Counter
+import matplotlib.pylab as plt
+
+def start(url):
+    wordlist = []
+    count=0
+    source_code = requests.get(url).text
+    soup = BeautifulSoup(source_code, 'html.parser')
+    for each_text in soup.findAll('div', {'class':'entry-content'}):
+        content = each_text.text
+        words = content.lower().split()
+
+        for each_word in words:
+            wordlist.append(each_word)
+            count+=1
+        print('The number of all the words after scraping'+str(count))
+        clean_wordlist(wordlist)
+
+# Function removes any unwanted symbols
+def clean_wordlist(wordlist):
+
+    clean_list =[]
+    for word in wordlist:
+        symbols = '!@#$%^&*()_-+={[}]|\;:"<>?/., '
+        for i in range (0, len(symbols)):
+            word = word.replace(symbols[i], '')
+
+        if len(word) > 0:
+            clean_list.append(word)
+    create_dictionary(clean_list)
+
+def create_dictionary(clean_list):
+    word_count = {}
+    graph_list={}
+
+    for word in clean_list:
+        if word in word_count:
+            word_count[word] += 1
+        else:
+            word_count[word] = 1
+
+    c = Counter(word_count)
+
+    # returns the most occuring elements
+    top = c.most_common(20)
+    top=dict(top)
+    lists=sorted(top.items())
+    x,y=zip(*lists)
+    plt.barh(x,y)  #displating bar plot
+    plt.show()
+    plt.pie(x,y,explode=(0.1,0.1),autopct="%d%%",shadow=True) #creating pie chart
+    plt.show()
+    
+    for word,values in word_count.items():
+        if(word[values]>3):
+            graph_list[words]=values
+    listy=sorted(top.items())
+    x1,y1=zip(*listy)
+    plt.scatter(x,y)  #creating a scatter plot
+    plt.show()
+        
+    
+
+
+if __name__ == '__main__':
+    start("https://en.wikipedia.org/wiki/Machine_learning")
