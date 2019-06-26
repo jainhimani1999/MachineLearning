@@ -1,0 +1,547 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "titanic_dataset",
+      "version": "0.3.2",
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/jainhimani1999/MachineLearning/blob/master/supervised-learning-1\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "CzyNC4r7IAHm",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "import pandas as pd\n",
+        "import numpy as np\n",
+        "from sklearn.metrics import accuracy_score\n",
+        "df=pd.read_csv('train.csv')"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "3pCn2VnbME5f",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "#defining features and labels\n",
+        "outcomes=df['Survived']\n",
+        "data=df.drop('Survived',axis=1)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "3M9dPVmwOydd",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "#calculating the accuracy score for the trained data\n",
+        "def accuracy(truth,pred):\n",
+        "  if(len(truth)==len(pred)):\n",
+        "    print(accuracy_score(truth,pred))\n",
+        "    "
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "xo8yW9bwzvDV",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "\n",
+        "#First calculating the Null accuracy assuming that a majority of the passengers (more than 50%) did not survive the ship sinking.\n",
+        "def prediction_0(data):\n",
+        "  prediction=[]\n",
+        "  for index,passanger in data.iterrows():\n",
+        "    prediction.append(0)\n",
+        "  return pd.Series(prediction) \n",
+        "\n",
+        "prediction=prediction_0(data)\n",
+        "print(prediction.head())"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "9oY1mXfM2APm",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "\n",
+        "print(accuracy(outcomes,prediction))"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "5RMeST_m5ROH",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "#Observing therelation among 'Sex' and Survival"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Rnb22uEL7k4T",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "def prediction_1(data):\n",
+        "  prediction=[]\n",
+        "  for index,passanger in data.iterrows():\n",
+        "    if(passanger['Sex']=='female'):\n",
+        "      prediction.append(1)\n",
+        "    else:\n",
+        "      prediction.append(0)\n",
+        " \n",
+        "  return pd.Series(prediction)\n",
+        "\n",
+        "prediction1=prediction_1(data)\n",
+        "prediction1.head()\n",
+        "  "
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ROh_vDMn8s-h",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "\n",
+        "#testing the accuracy if prediction_1\n",
+        "print(accuracy_score(outcomes, prediction1))"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "P0qOwZP5-vzC",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "#Examining the trend between Age of male and survival"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "MMytaNg2_G78",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "def prediction_2(data):\n",
+        "  prediction=[]\n",
+        "  for index,passanger in data.iterrows():\n",
+        "    if(passanger['Sex']=='female'):\n",
+        "      prediction.append(1)\n",
+        "    elif(passanger['Sex']=='male' and passanger['Age']<10):\n",
+        "      prediction.append(1)\n",
+        "    else:\n",
+        "      prediction.append(0)\n",
+        " \n",
+        "  return pd.Series(prediction)\n",
+        "\n",
+        "prediction2=prediction_2(data)\n",
+        "prediction2.head()"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "V1rmab5i_gHa",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "\n",
+        "#checking tha accuracy of prediction_2\n",
+        "print(accuracy_score(outcomes, prediction2))"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "0q13rp9y_qWx",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "\n",
+        "#checking hte relation between survival and pclasses"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "HvZ4zxjnC1gW",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "\n",
+        "def predictions_3(data):\n",
+        "  predictions=[]\n",
+        "  for index, passenger in data.iterrows():\n",
+        "        if passenger['Sex'] == 'female':\n",
+        "            if passenger['Pclass'] == 3 and passenger['Age'] > 40 and passenger['Age'] < 60:\n",
+        "                predictions.append(0)\n",
+        "            elif passenger['Pclass'] == 1 and passenger['Age'] < 10:\n",
+        "                predictions.append(0)\n",
+        "            else:\n",
+        "                predictions.append(1)\n",
+        "        if passenger['Sex'] == 'male':\n",
+        "            if passenger['Pclass'] == 2 and passenger['Age'] < 10:\n",
+        "                predictions.append(1)\n",
+        "            elif passenger['Pclass'] == 1 and passenger['Age'] < 40:\n",
+        "                predictions.append(1)\n",
+        "            else:\n",
+        "                predictions.append(0)\n",
+        "  return pd.Series(predictions)\n",
+        "\n",
+        "predictions3 = predictions_3(data)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "6Rn50fIeDQ9v",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "print(accuracy_score(outcomes, predictions3))"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "wW2Nwv177zcA",
+        "colab_type": "code",
+        "outputId": "5117de7d-9b7c-4f52-d641-6a1108075ac7",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 331
+        }
+      },
+      "source": [
+        "dd=pd.read_csv('train.csv')\n",
+        "dd.info()\n",
+        "dd=dd.iloc[:,:].values"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 891 entries, 0 to 890\n",
+            "Data columns (total 12 columns):\n",
+            "PassengerId    891 non-null int64\n",
+            "Survived       891 non-null int64\n",
+            "Pclass         891 non-null int64\n",
+            "Name           891 non-null object\n",
+            "Sex            891 non-null object\n",
+            "Age            714 non-null float64\n",
+            "SibSp          891 non-null int64\n",
+            "Parch          891 non-null int64\n",
+            "Ticket         891 non-null object\n",
+            "Fare           891 non-null float64\n",
+            "Cabin          204 non-null object\n",
+            "Embarked       889 non-null object\n",
+            "dtypes: float64(2), int64(5), object(5)\n",
+            "memory usage: 83.6+ KB\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "isCe0XRs8wOe",
+        "colab_type": "code",
+        "outputId": "0e6171c4-0db0-4415-8882-dc86f223050a",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 74
+        }
+      },
+      "source": [
+        "from sklearn.preprocessing import Imputer\n",
+        "imp=Imputer(missing_values='NaN',axis=1,strategy='mean')"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "/usr/local/lib/python3.6/dist-packages/sklearn/utils/deprecation.py:66: DeprecationWarning: Class Imputer is deprecated; Imputer was deprecated in version 0.20 and will be removed in 0.22. Import impute.SimpleImputer from sklearn instead.\n",
+            "  warnings.warn(msg, category=DeprecationWarning)\n"
+          ],
+          "name": "stderr"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "uJxGldKd9KwW",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "imputer=imp.fit(dd[:,5])"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "0imbBDoa9W0D",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "\n",
+        "dd[:,5]=imputer.transform((dd[:,5].reshape(1,-1)))"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "2nl5tPhc-SyZ",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "E8fq7JOVAVxo",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "from sklearn.preprocessing import LabelEncoder\n",
+        "cont=LabelEncoder()"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "K2tq9dX3Irvh",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "dd[:,4]=cont.fit_transform(dd[:,4])"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ezriB1_mJA6B",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "dd[:,5]=dd[:,5].astype(int)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "KIFWsS40JK3f",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "features=dd[:,1]\n",
+        "data=dd[:,[2,4,5]]"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "TOKs9unPQeyA",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "from sklearn.model_selection import train_test_split"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "gfASfznaNZMg",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "train_data,test_data,train_label,test_label=train_test_split(data,features,test_size=0.1)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "NddR0PPSOCST",
+        "colab_type": "code",
+        "outputId": "67c49bac-b0ed-4809-d3fd-83fa1a3a8ae9",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 363
+        }
+      },
+      "source": [
+        "from sklearn.tree import DecisionTreeClassifier\n",
+        "clf=DecisionTreeClassifier()\n",
+        "trained=clf.fit(train_data,train_label)"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "ValueError",
+          "evalue": "ignored",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mValueError\u001b[0m                                Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-59-e288ae01844e>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      1\u001b[0m \u001b[0;32mfrom\u001b[0m \u001b[0msklearn\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtree\u001b[0m \u001b[0;32mimport\u001b[0m \u001b[0mDecisionTreeClassifier\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      2\u001b[0m \u001b[0mclf\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mDecisionTreeClassifier\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 3\u001b[0;31m \u001b[0mtrained\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mclf\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mfit\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtrain_data\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0mtrain_label\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+            "\u001b[0;32m/usr/local/lib/python3.6/dist-packages/sklearn/tree/tree.py\u001b[0m in \u001b[0;36mfit\u001b[0;34m(self, X, y, sample_weight, check_input, X_idx_sorted)\u001b[0m\n\u001b[1;32m    814\u001b[0m             \u001b[0msample_weight\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0msample_weight\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    815\u001b[0m             \u001b[0mcheck_input\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mcheck_input\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 816\u001b[0;31m             X_idx_sorted=X_idx_sorted)\n\u001b[0m\u001b[1;32m    817\u001b[0m         \u001b[0;32mreturn\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    818\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;32m/usr/local/lib/python3.6/dist-packages/sklearn/tree/tree.py\u001b[0m in \u001b[0;36mfit\u001b[0;34m(self, X, y, sample_weight, check_input, X_idx_sorted)\u001b[0m\n\u001b[1;32m    152\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    153\u001b[0m         \u001b[0;32mif\u001b[0m \u001b[0mis_classification\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 154\u001b[0;31m             \u001b[0mcheck_classification_targets\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0my\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    155\u001b[0m             \u001b[0my\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mcopy\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0my\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    156\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;32m/usr/local/lib/python3.6/dist-packages/sklearn/utils/multiclass.py\u001b[0m in \u001b[0;36mcheck_classification_targets\u001b[0;34m(y)\u001b[0m\n\u001b[1;32m    167\u001b[0m     if y_type not in ['binary', 'multiclass', 'multiclass-multioutput',\n\u001b[1;32m    168\u001b[0m                       'multilabel-indicator', 'multilabel-sequences']:\n\u001b[0;32m--> 169\u001b[0;31m         \u001b[0;32mraise\u001b[0m \u001b[0mValueError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m\"Unknown label type: %r\"\u001b[0m \u001b[0;34m%\u001b[0m \u001b[0my_type\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    170\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    171\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mValueError\u001b[0m: Unknown label type: 'unknown'"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "7u4G8LzaOaQj",
+        "colab_type": "code",
+        "outputId": "fa6ffbce-76ca-426c-cf8f-679c3604ea75",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 346
+        }
+      },
+      "source": [
+        "pred=trained.predict(test_data)"
+      ],
+      "execution_count": 0,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "NotFittedError",
+          "evalue": "ignored",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mNotFittedError\u001b[0m                            Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-38-35a11096fe4d>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[0;32m----> 1\u001b[0;31m \u001b[0mpred\u001b[0m\u001b[0;34m=\u001b[0m\u001b[0mtrained\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mpredict\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mtest_data\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m",
+            "\u001b[0;32m/usr/local/lib/python3.6/dist-packages/sklearn/tree/tree.py\u001b[0m in \u001b[0;36mpredict\u001b[0;34m(self, X, check_input)\u001b[0m\n\u001b[1;32m    427\u001b[0m             \u001b[0mThe\u001b[0m \u001b[0mpredicted\u001b[0m \u001b[0mclasses\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;32mor\u001b[0m \u001b[0mthe\u001b[0m \u001b[0mpredict\u001b[0m \u001b[0mvalues\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    428\u001b[0m         \"\"\"\n\u001b[0;32m--> 429\u001b[0;31m         \u001b[0mcheck_is_fitted\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mself\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0;34m'tree_'\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    430\u001b[0m         \u001b[0mX\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m_validate_X_predict\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mX\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mcheck_input\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    431\u001b[0m         \u001b[0mproba\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mself\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mtree_\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mpredict\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mX\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;32m/usr/local/lib/python3.6/dist-packages/sklearn/utils/validation.py\u001b[0m in \u001b[0;36mcheck_is_fitted\u001b[0;34m(estimator, attributes, msg, all_or_any)\u001b[0m\n\u001b[1;32m    912\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    913\u001b[0m     \u001b[0;32mif\u001b[0m \u001b[0;32mnot\u001b[0m \u001b[0mall_or_any\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m[\u001b[0m\u001b[0mhasattr\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mestimator\u001b[0m\u001b[0;34m,\u001b[0m \u001b[0mattr\u001b[0m\u001b[0;34m)\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0mattr\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mattributes\u001b[0m\u001b[0;34m]\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m--> 914\u001b[0;31m         \u001b[0;32mraise\u001b[0m \u001b[0mNotFittedError\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mmsg\u001b[0m \u001b[0;34m%\u001b[0m \u001b[0;34m{\u001b[0m\u001b[0;34m'name'\u001b[0m\u001b[0;34m:\u001b[0m \u001b[0mtype\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0mestimator\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0m__name__\u001b[0m\u001b[0;34m}\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m    915\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m    916\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mNotFittedError\u001b[0m: This DecisionTreeClassifier instance is not fitted yet. Call 'fit' with appropriate arguments before using this method."
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "NUB9qPFCOpyj",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": 0,
+      "outputs": []
+    }
+  ]
+}
